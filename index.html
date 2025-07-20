@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Flappy Bird Game</title>
+    <link rel="stylesheet" href="style.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="background"></div>
+
+    <div id="menu-screen">
+        <h1 class="game-title">Flappy Bird</h1>
+
+        <div class="bird-wrapper">
+            <img id="menu-bird" src="assets/img/closedwings1.png" alt="Bird" />
+        </div>
+
+        <button id="start-btn">Start Game</button>
+        <p id="high-score">High Score: 0</p>
+    </div>
+
+    <canvas id="game-screen" class="hidden"></canvas>
+
+    <script src="js/game.js"></script>
+    <script src="js/menu.js"></script>
+</body>
+
+</html>

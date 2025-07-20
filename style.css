@@ -1,0 +1,112 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Fredoka One', cursive;
+}
+
+body {
+  overflow: hidden;
+  height: 100vh;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  background: none;
+}
+
+.background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-image: url('assets/img/bgsky.jpeg');
+  background-repeat: repeat-x;
+  background-position: bottom left;
+  background-size: auto 100%;
+  animation: scroll 30s linear infinite;
+  z-index: -1;
+}
+
+@keyframes scroll {
+  0% { background-position-x: 0; }
+  100% { background-position-x: -1000px; }
+}
+
+#menu-screen {
+  text-align: center;
+  z-index: 10;
+  position: relative;
+}
+
+.game-title {
+  font-size: 4rem;
+  color: #fff;
+  text-shadow: 3px 3px 0 #000;
+  margin-bottom: 30px;
+}
+
+.bird-wrapper {
+  margin-bottom: 30px;
+}
+
+#menu-bird {
+  width: 90px;
+  animation: flap 0.3s steps(2) infinite alternate,
+             float 1s ease-in-out infinite alternate;
+  filter: drop-shadow(2px 2px 0 #222);
+}
+
+@keyframes flap {
+  0% { content: url('assets/img/closedwings1.png'); }
+  100% { content: url('assets/img/openedwings1.png'); }
+}
+
+@keyframes float {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-10px); }
+}
+
+button#start-btn {
+  margin: 10px auto;
+  padding: 14px 34px;
+  font-size: 1.5rem;
+  background: #ffcc00;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  animation: pulse 1.5s infinite;
+  box-shadow: 0 6px 0 #c9a500;
+  transition: transform 0.2s ease;
+}
+
+button#start-btn:hover {
+  transform: scale(1.05);
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+#high-score {
+  margin-top: 20px;
+  color: #fff;
+  text-shadow: 2px 2px 0 #000;
+  font-size: 1.2rem;
+}
+
+.hidden {
+  display: none !important;
+}
+
+canvas#game-screen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 20;
+  background-color: transparent;
+}
