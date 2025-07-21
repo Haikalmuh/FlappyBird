@@ -7,6 +7,12 @@ canvas.height = window.innerHeight;
 const birdImg = new Image();
 birdImg.src = "assets/img/closedwings1.png";
 
+const pipeTopImg = new Image();
+pipeTopImg.src = "assets/img/pipe-top.png";
+
+const pipeBottomImg = new Image();
+pipeBottomImg.src = "assets/img/pipe-bottom.png";
+
 let bird = {
     x: canvas.width / 4,
     y: canvas.height / 2,
@@ -19,9 +25,12 @@ let bird = {
 let pipes = [];
 let pipeInterval;
 let gameRunning = false;
+let score = 0;
+let highScore = localStorage.getItem("flappyHighScore") || 0;
+
 
 function flap() {
-    bird.velocity = -8;
+    bird.velocity = -7;
 }
 
 window.addEventListener("mousedown", () => {
@@ -35,19 +44,50 @@ function drawBird() {
     ctx.drawImage(birdImg, bird.x, bird.y, bird.width, bird.height);
 }
 
+function drawScore() {
+    ctx.fillStyle = "#fff";
+    ctx.font = "bold 36px Fredoka One";
+    ctx.textAlign = "center";
+    ctx.fillText(`Score: ${score}`, canvas.width / 2, 60);
+}
+
 function drawPipes() {
-    ctx.fillStyle = "#2ecc71";
     pipes.forEach(pipe => {
-        // Pipa atas
-        ctx.fillRect(pipe.x, 0, pipe.width, pipe.top);
-        // Pipa bawah
-        ctx.fillRect(pipe.x, pipe.top + pipe.gap, pipe.width, canvas.height - pipe.top - pipe.gap);
+        // Gambar pipa atas
+        ctx.drawImage(
+            pipeTopImg,
+            pipe.x,
+            pipe.top - pipeTopImg.height,
+            pipe.width,
+            pipeTopImg.height
+        );
+
+        // Gambar pipa bawah
+        ctx.drawImage(
+            pipeBottomImg,
+            pipe.x,
+            pipe.top + pipe.gap,
+            pipe.width,
+            pipeBottomImg.height
+        );
     });
 }
+
+
 
 function updatePipes() {
     pipes.forEach(pipe => {
         pipe.x -= pipe.speed;
+
+        if (!pipe.scored && bird.x > pipe.x + pipe.width) {
+            score++;
+            pipe.scored = true;
+
+            if (score > highScore) {
+                highScore = score;
+                localStorage.setItem("flappyHighScore", highScore);
+            }
+        }
     });
 
     // Hapus pipa yang keluar layar
@@ -55,7 +95,7 @@ function updatePipes() {
 }
 
 function spawnPipe() {
-    const pipeWidth = 60;
+    const pipeWidth = 80; // sesuaikan dengan ukuran gambar
     const gapHeight = 180;
     const topHeight = Math.random() * (canvas.height - gapHeight - 100) + 50;
 
@@ -67,6 +107,7 @@ function spawnPipe() {
         speed: 3
     });
 }
+
 
 function detectCollision() {
     // Tabrak tanah atau langit
@@ -92,9 +133,11 @@ function detectCollision() {
 function gameOver() {
     clearInterval(pipeInterval);
     gameRunning = false;
-    alert("Game Over!");
-    location.reload(); // muat ulang halaman
+
+    alert(`Game Over!\nScore: ${score}\nHigh Score: ${highScore}`);
+    location.reload();
 }
+
 
 function gameLoop() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -106,6 +149,7 @@ function gameLoop() {
 
     drawPipes();
     drawBird();
+    drawScore();
 
     if (detectCollision()) {
         gameOver();
