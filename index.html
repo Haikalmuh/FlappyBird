@@ -22,9 +22,19 @@
 
         <button id="start-btn">Start Game</button>
         <p id="high-score">High Score: 0</p>
+        <p class="control-info">Controls: Click 🖱️ / Space ⌨️ / W ⌨️ / ↑</p>
     </div>
 
     <canvas id="game-screen" class="hidden"></canvas>
+
+    <div id="game-over-card" class="hidden">
+        <div class="card-content">
+            <h2>Game Over</h2>
+            <p id="final-score">Score: 0</p>
+            <p id="final-highscore">High Score: 0</p>
+            <button id="restart-btn">Restart</button>
+        </div>
+    </div>
 
     <script src="js/game.js"></script>
     <script src="js/menu.js"></script>

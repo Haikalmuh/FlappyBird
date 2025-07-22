@@ -36,9 +36,18 @@ function flap() {
 window.addEventListener("mousedown", () => {
     if (gameRunning) flap();
 });
+
 window.addEventListener("keydown", (e) => {
-    if (e.code === "Space" && gameRunning) flap();
+    const key = e.code;
+    if (gameRunning && (key === "Space" || key === "KeyW" || key === "ArrowUp")) {
+        flap();
+    }
 });
+
+document.getElementById("restart-btn").addEventListener("click", () => {
+    location.reload(); // Atau kamu bisa bikin fungsi resetGame() nanti
+});
+
 
 function drawBird() {
     ctx.drawImage(birdImg, bird.x, bird.y, bird.width, bird.height);
@@ -134,9 +143,15 @@ function gameOver() {
     clearInterval(pipeInterval);
     gameRunning = false;
 
-    alert(`Game Over!\nScore: ${score}\nHigh Score: ${highScore}`);
-    location.reload();
+    const gameOverCard = document.getElementById("game-over-card");
+    const finalScore = document.getElementById("final-score");
+    const finalHighScore = document.getElementById("final-highscore");
+
+    finalScore.textContent = `Score: ${score}`;
+    finalHighScore.textContent = `High Score: ${highScore}`;
+    gameOverCard.classList.remove("hidden");
 }
+
 
 
 function gameLoop() {
