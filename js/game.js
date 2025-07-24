@@ -4,6 +4,13 @@ const ctx = canvas.getContext("2d");
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
+// Elemen untuk pause
+const pauseMenu = document.getElementById("pause-menu");
+const resumeBtn = document.getElementById("resume-btn");
+const restartBtnPause = document.getElementById("restart-btn-pause");
+
+let isPaused = false;
+
 const birdImg = new Image();
 birdImg.src = "assets/img/closedwings1.png";
 
@@ -28,26 +35,49 @@ let gameRunning = false;
 let score = 0;
 let highScore = localStorage.getItem("flappyHighScore") || 0;
 
-
 function flap() {
     bird.velocity = -7;
 }
 
 window.addEventListener("mousedown", () => {
-    if (gameRunning) flap();
+    if (gameRunning && !isPaused) flap();
 });
 
 window.addEventListener("keydown", (e) => {
     const key = e.code;
-    if (gameRunning && (key === "Space" || key === "KeyW" || key === "ArrowUp")) {
+    if (gameRunning && !isPaused && (key === "Space" || key === "KeyW" || key === "ArrowUp")) {
         flap();
+    }
+
+    // Toggle pause
+    if (gameRunning && key === "KeyP") {
+        isPaused = !isPaused;
+        if (isPaused) {
+            pauseMenu.classList.remove("hidden");
+            clearInterval(pipeInterval); // 🛑 hentikan pipa saat pause
+        } else {
+            pauseMenu.classList.add("hidden");
+            pipeInterval = setInterval(spawnPipe, 1800); // ✅ atur ulang setelah resume
+            gameLoop(); // lanjut loop
+        }
     }
 });
 
-document.getElementById("restart-btn").addEventListener("click", () => {
-    location.reload(); // Atau kamu bisa bikin fungsi resetGame() nanti
+resumeBtn.addEventListener("click", () => {
+    isPaused = false;
+    pauseMenu.classList.add("hidden");
+    pipeInterval = setInterval(spawnPipe, 1800); // ✅ pastikan hanya satu interval
+    gameLoop();
 });
 
+
+restartBtnPause.addEventListener("click", () => {
+    location.reload();
+});
+
+document.getElementById("restart-btn").addEventListener("click", () => {
+    location.reload();
+});
 
 function drawBird() {
     ctx.drawImage(birdImg, bird.x, bird.y, bird.width, bird.height);
@@ -62,27 +92,10 @@ function drawScore() {
 
 function drawPipes() {
     pipes.forEach(pipe => {
-        // Gambar pipa atas
-        ctx.drawImage(
-            pipeTopImg,
-            pipe.x,
-            pipe.top - pipeTopImg.height,
-            pipe.width,
-            pipeTopImg.height
-        );
-
-        // Gambar pipa bawah
-        ctx.drawImage(
-            pipeBottomImg,
-            pipe.x,
-            pipe.top + pipe.gap,
-            pipe.width,
-            pipeBottomImg.height
-        );
+        ctx.drawImage(pipeTopImg, pipe.x, pipe.top - pipeTopImg.height, pipe.width, pipeTopImg.height);
+        ctx.drawImage(pipeBottomImg, pipe.x, pipe.top + pipe.gap, pipe.width, pipeBottomImg.height);
     });
 }
-
-
 
 function updatePipes() {
     pipes.forEach(pipe => {
@@ -99,12 +112,11 @@ function updatePipes() {
         }
     });
 
-    // Hapus pipa yang keluar layar
     pipes = pipes.filter(pipe => pipe.x + pipe.width > 0);
 }
 
 function spawnPipe() {
-    const pipeWidth = 80; // sesuaikan dengan ukuran gambar
+    const pipeWidth = 80;
     const gapHeight = 180;
     const topHeight = Math.random() * (canvas.height - gapHeight - 100) + 50;
 
@@ -113,24 +125,19 @@ function spawnPipe() {
         width: pipeWidth,
         top: topHeight,
         gap: gapHeight,
-        speed: 3
+        speed: 3,
+        scored: false
     });
 }
 
-
 function detectCollision() {
-    // Tabrak tanah atau langit
     if (bird.y + bird.height > canvas.height || bird.y < 0) return true;
 
-    // Tabrak pipa
     for (let pipe of pipes) {
         if (
             bird.x < pipe.x + pipe.width &&
             bird.x + bird.width > pipe.x &&
-            (
-                bird.y < pipe.top ||
-                bird.y + bird.height > pipe.top + pipe.gap
-            )
+            (bird.y < pipe.top || bird.y + bird.height > pipe.top + pipe.gap)
         ) {
             return true;
         }
@@ -152,9 +159,9 @@ function gameOver() {
     gameOverCard.classList.remove("hidden");
 }
 
-
-
 function gameLoop() {
+    if (!gameRunning || isPaused) return;
+
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     bird.velocity += bird.gravity;
@@ -178,9 +185,11 @@ window.startGame = () => {
     bird.y = canvas.height / 2;
     bird.velocity = 0;
     pipes = [];
+    score = 0;
     gameRunning = true;
+    isPaused = false;
 
     pipeInterval = setInterval(spawnPipe, 1800);
-    spawnPipe(); // langsung muncul satu pertama
+    spawnPipe();
     gameLoop();
 };

@@ -196,3 +196,44 @@ canvas#game-screen {
   font-style: italic;
 }
 
+.info-card {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    padding: 10px 16px;
+    border-radius: 12px;
+    font-family: 'Fredoka One', sans-serif;
+    font-size: 16px;
+    z-index: 100;
+}
+
+.pause-card {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #222;
+    color: #fff;
+    padding: 30px 40px;
+    border-radius: 16px;
+    text-align: center;
+    z-index: 200;
+    font-family: 'Fredoka One', sans-serif;
+}
+
+.pause-card button {
+    margin: 10px;
+    padding: 10px 22px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    background-color: #00bcd4;
+    color: white;
+}
+
+.hidden {
+    display: none;
+}
