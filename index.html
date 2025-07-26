@@ -20,12 +20,41 @@
             <img id="menu-bird" src="assets/img/closedwings1.png" alt="Bird" />
         </div>
 
-        <button id="start-btn">Start Game</button>
+        <div class="menu-buttons">
+            <button id="start-btn">Start Game</button>
+            <button id="map-btn">Ganti Tema Map</button>
+        </div>
+
         <p id="high-score">High Score: 0</p>
         <p class="control-info">Controls: Click 🖱️ / Space ⌨️ / W ⌨️ / ↑</p>
     </div>
 
     <canvas id="game-screen" class="hidden"></canvas>
+
+    <div id="map-modal" class="hidden modal-overlay">
+        <div class="modal-content">
+            <h2>Pilih Tema Map</h2>
+            <div class="map-options">
+                <div class="map-option" data-map="day">
+                    <img src="assets/maps/bg-day.png" alt="Day Theme">
+                    <div class="checkmark hidden">✔</div>
+                </div>
+                <div class="map-option" data-map="anime">
+                    <img src="assets/maps/bg-anime.png" alt="Night Theme">
+                    <div class="checkmark hidden">✔</div>
+                </div>
+                <div class="map-option" data-map="night">
+                    <img src="assets/maps/bg-night.png" alt="Forest Theme">
+                    <div class="checkmark hidden">✔</div>
+                </div>
+                <div class="map-option" data-map="mountain">
+                    <img src="assets/maps/bg-mountain.png" alt="Mountain Theme">
+                    <div class="checkmark hidden">✔</div>
+                </div>
+            </div>
+            <button id="close-map-modal">Tutup</button>
+        </div>
+    </div>
 
     <div id="game-over-card" class="hidden">
         <div class="card-content">
