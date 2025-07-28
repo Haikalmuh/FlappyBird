@@ -100,6 +100,8 @@ function resetGame() {
     const countdown = document.getElementById("countdown");
     countdown.classList.add("hidden");
     countdown.textContent = "3"; // reset angkanya
+
+    updateHighScoreUI();
 }
 
 
@@ -120,6 +122,14 @@ function drawScore() {
     ctx.fillText(`Score: ${score}`, canvas.width / 2, 60);
 }
 
+function updateHighScoreUI() {
+    const highScoreText = document.getElementById("high-score");
+    const storedHighScore = localStorage.getItem("flappyHighScore") || 0;
+    if (highScoreText) {
+        highScoreText.textContent = `High Score: ${storedHighScore}`;
+    }
+}
+
 function drawPipes() {
     pipes.forEach(pipe => {
         ctx.drawImage(pipeTopImg, pipe.x, pipe.top - pipeTopImg.height, pipe.width, pipeTopImg.height);
@@ -138,6 +148,7 @@ function updatePipes() {
             if (score > highScore) {
                 highScore = score;
                 localStorage.setItem("flappyHighScore", highScore);
+                updateHighScoreUI();
             }
         }
     });
