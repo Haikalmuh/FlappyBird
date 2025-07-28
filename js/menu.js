@@ -77,3 +77,64 @@ function applyMapTheme(theme) {
     const selected = document.querySelector(`.map-option[data-map="${theme}"] .checkmark`);
     if (selected) selected.classList.remove("hidden");
 }
+
+// === BACKGROUND MUSIC ===
+const bgMusic = new Audio("assets/sounds/bg-newhorizonslofi.mp3");
+bgMusic.loop = true;
+bgMusic.volume = 0.5;
+
+const musicToggleBtn = document.getElementById("music-toggle-btn");
+
+// Ambil status dari localStorage, default OFF (false)
+let musicEnabled = localStorage.getItem("musicEnabled") === "true"; // default: false
+
+function updateMusicBtn() {
+    musicToggleBtn.textContent = musicEnabled ? "🎵 Musik: ON" : "🔇 Musik: OFF";
+}
+
+function playMusicIfEnabled() {
+    if (musicEnabled) {
+        bgMusic.play().catch(() => {
+            console.warn("Autoplay ditolak. Musik akan diputar setelah interaksi.");
+        });
+    } else {
+        bgMusic.pause();
+    }
+}
+
+// Saat halaman pertama dimuat
+window.addEventListener("DOMContentLoaded", () => {
+    updateMusicBtn();         // sinkronkan tampilan tombol
+    playMusicIfEnabled();     // mainkan musik jika diaktifkan
+});
+
+// Klik tombol toggle musik
+musicToggleBtn.addEventListener("click", () => {
+    musicEnabled = !musicEnabled;
+    localStorage.setItem("musicEnabled", musicEnabled);
+    updateMusicBtn();
+    updatePauseMusicBtn();
+    playMusicIfEnabled();
+});
+
+// === Tombol Musik di Modal Pause ===
+const pauseMusicToggleBtn = document.getElementById("pause-music-toggle-btn");
+
+function updatePauseMusicBtn() {
+    if (!pauseMusicToggleBtn) return;
+    pauseMusicToggleBtn.textContent = musicEnabled ? "🎵 Musik: ON" : "🔇 Musik: OFF";
+}
+
+if (pauseMusicToggleBtn) {
+    pauseMusicToggleBtn.addEventListener("click", () => {
+        musicEnabled = !musicEnabled;
+        localStorage.setItem("musicEnabled", musicEnabled);
+
+        updateMusicBtn();         // update tombol utama
+        updatePauseMusicBtn();    // update tombol di pause modal
+        playMusicIfEnabled();     // play/pause musik sesuai status
+    });
+
+    // sinkronkan saat awal
+    updatePauseMusicBtn();
+}

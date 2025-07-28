@@ -34,6 +34,7 @@ let pipeInterval;
 let gameRunning = false;
 let score = 0;
 let highScore = localStorage.getItem("flappyHighScore") || 0;
+let animationFrameId;
 
 function flap() {
     bird.velocity = -7;
@@ -70,14 +71,43 @@ resumeBtn.addEventListener("click", () => {
     gameLoop();
 });
 
+function resetGame() {
+    // Reset variabel game
+    bird.y = canvas.height / 2;
+    bird.velocity = 0;
+    pipes = [];
+    score = 0;
+    isPaused = false;
+    gameRunning = false;
 
-restartBtnPause.addEventListener("click", () => {
-    location.reload();
-});
+    // Hentikan interval & animasi jika ada
+    clearInterval(pipeInterval);
+    cancelAnimationFrame(animationFrameId); // pastikan kamu pakai ini jika pakai requestAnimationFrame
 
-document.getElementById("restart-btn").addEventListener("click", () => {
-    location.reload();
-});
+    // Kosongkan canvas
+    const ctx = canvas.getContext("2d");
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Sembunyikan elemen yang tidak diperlukan
+    pauseMenu.classList.add("hidden");
+    document.getElementById("game-over-card").classList.add("hidden");
+
+    // Tampilkan menu, sembunyikan canvas
+    gameScreen.classList.add("hidden");
+    menuScreen.classList.remove("hidden");
+
+    // Pastikan countdown tidak tertimpa (opsional)
+    const countdown = document.getElementById("countdown");
+    countdown.classList.add("hidden");
+    countdown.textContent = "3"; // reset angkanya
+}
+
+
+restartBtnPause.addEventListener("click", resetGame);
+
+
+document.getElementById("restart-btn").addEventListener("click", resetGame);
+
 
 function drawBird() {
     ctx.drawImage(birdImg, bird.x, bird.y, bird.width, bird.height);
@@ -178,7 +208,7 @@ function gameLoop() {
         return;
     }
 
-    requestAnimationFrame(gameLoop);
+    animationFrameId = requestAnimationFrame(gameLoop);
 }
 
 window.startGame = () => {

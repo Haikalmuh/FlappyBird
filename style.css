@@ -355,3 +355,32 @@ canvas#game-screen {
   gap: 10px;
   margin-top: 20px;
 }
+
+.option-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 10px;
+}
+
+.option-buttons button {
+  min-width: 160px;
+}
+
+#music-toggle-btn {
+  margin-top: 10px;
+  padding: 10px 16px;
+  background: linear-gradient(135deg, #43cea2, #185a9d); /* hijau ke biru */
+  border: none;
+  color: white;
+  font-weight: bold;
+  border-radius: 12px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+#music-toggle-btn:hover {
+  background: linear-gradient(135deg, #2b9e7b, #104e8b);
+  transform: scale(1.05);
+}

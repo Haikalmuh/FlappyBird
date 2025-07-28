@@ -5,6 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Flappy Bird Game</title>
+    <link rel="shortcut icon" href="assets/img/pavicon.png" type="image/x-icon">
     <link rel="stylesheet" href="style.css" />
     <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
 </head>
@@ -22,7 +23,11 @@
 
         <div class="menu-buttons">
             <button id="start-btn">Start Game</button>
+        </div>
+
+        <div class="option-buttons">
             <button id="map-btn">Ganti Tema Map</button>
+            <button id="music-toggle-btn">🔇 Musik: OFF</button>
         </div>
 
         <p id="high-score">High Score: 0</p>
@@ -51,6 +56,14 @@
                     <img src="assets/maps/bg-mountain.png" alt="Mountain Theme">
                     <div class="checkmark hidden">✔</div>
                 </div>
+                <div class="map-option" data-map="desert">
+                    <img src="assets/maps/bg-desert.png" alt="Desert Theme">
+                    <div class="checkmark hidden">✔</div>
+                </div>
+                <div class="map-option" data-map="snowy">
+                    <img src="assets/maps/bg-snowy.png" alt="Snowy Theme">
+                    <div class="checkmark hidden">✔</div>
+                </div>
             </div>
             <button id="close-map-modal">Tutup</button>
         </div>
@@ -75,6 +88,7 @@
         <h2>⏸️ Game Paused</h2>
         <button id="resume-btn">Resume</button>
         <button id="restart-btn-pause">Restart</button>
+        <button id="pause-music-toggle-btn">🔇 Musik: OFF</button>
     </div>
 
 
